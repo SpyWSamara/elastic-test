@@ -2,8 +2,11 @@
 
 namespace App\Providers;
 
-use App\Articles\EloquentSearchRepository;
-use App\Articles\SearchRepository;
+use App\Articles\ArticlesRepository;
+use App\Articles\ElasticsearchRepository;
+use App\Articles\EloquentArticlesRepository;
+use Elasticsearch\Client;
+use Elasticsearch\ClientBuilder;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -16,9 +19,20 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(
-            SearchRepository::class,
-            EloquentSearchRepository::class
+            ArticlesRepository::class,
+            EloquentArticlesRepository::class
         );
+        $this->app->bind(ArticlesRepository::class, function ($app) {
+            if (!config('services.search.enabled')) {
+                return new EloquentArticlesRepository();
+            }
+
+            return new ElasticsearchRepository(
+                $app->make(Client::class)
+            );
+        });
+
+        $this->bindElasticsearchClient();
     }
 
     /**
@@ -29,5 +43,14 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         //
+    }
+
+    private function bindElasticsearchClient()
+    {
+        $this->app->bind(Client::class, function ($app) {
+            return ClientBuilder::create()
+                ->setHosts(config('services.search.enabled'))
+                ->build();
+        });
     }
 }
