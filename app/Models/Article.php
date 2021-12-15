@@ -18,8 +18,8 @@ class Article extends Model
     public function toElasticsearchDocumentArray(): array
     {
         return [
-            'title' => $this->title(),
-            'body'  => $this->body(),
+            'title' => $this->title,
+            'body'  => $this->body,
         ];
     }
 
