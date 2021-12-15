@@ -49,7 +49,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(Client::class, function ($app) {
             return ClientBuilder::create()
-                ->setHosts(config('services.search.enabled'))
+                ->setHosts(config('services.search.hosts'))
                 ->build();
         });
     }
