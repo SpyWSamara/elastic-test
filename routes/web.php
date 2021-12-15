@@ -1,6 +1,6 @@
 <?php
 
-use App\Articles\SearchRepository;
+use App\Articles\ArticlesRepository;
 use App\Models\Article;
 use Illuminate\Support\Facades\Route;
 
@@ -19,7 +19,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function (SearchRepository $searchRepository) {
+Route::get('/dashboard', function (ArticlesRepository $searchRepository) {
     return view('dashboard', [
         'articles' => request()->has('q')
             ? $searchRepository->search(request('q'))
