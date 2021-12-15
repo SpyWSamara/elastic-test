@@ -22,4 +22,14 @@ class Article extends Model
             'body'  => $this->body(),
         ];
     }
+
+    public function getSearchIndex()
+    {
+        return 'articles_index';
+    }
+
+    public function getSearchType()
+    {
+        return '_doc';
+    }
 }
