@@ -1,5 +1,6 @@
 <?php
 
+use App\Articles\SearchRepository;
 use App\Models\Article;
 use Illuminate\Support\Facades\Route;
 
@@ -18,9 +19,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
+Route::get('/dashboard', function (SearchRepository $searchRepository) {
     return view('dashboard', [
-        'articles' => Article::all(),
+        'articles' => request()->has('q')
+            ? $searchRepository->search(request('q'))
+            : Article::all(),
     ]);
 })->middleware(['auth'])->name('dashboard');
 
