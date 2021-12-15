@@ -7,7 +7,7 @@ use Elasticsearch\Client;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Arr;
 
-class ElasticsearchRepository implements SearchRepository
+class ElasticsearchRepository implements ArticlesRepository
 {
     public function __construct(private Client $client)
     {

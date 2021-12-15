@@ -5,7 +5,7 @@ namespace App\Articles;
 use App\Models\Article;
 use Illuminate\Database\Eloquent\Collection;
 
-class EloquentSearchRepository implements SearchRepository
+class EloquentArticlesRepository implements ArticlesRepository
 {
     public function search(string $term): Collection
     {
